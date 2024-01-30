@@ -1,0 +1,6 @@
+@ThePlannerAPI_HostAddress = http://localhost:5133
+
+GET {{ThePlannerAPI_HostAddress}}/
+Accept: application/json
+
+###
