@@ -89,18 +89,19 @@ namespace ThePlannerAPI.Services
         }
 
 
-        public async Task<int> UpdateAssignment(UpdateAssignmentDTO updateAssignment, int id)
+        public async Task<int> UpdateAssignment(UpdateAssignmentDTO updateAssignment, int categoryId)
         {
-            var existingAssignment = await _context.Assignments.FirstOrDefaultAsync(a => a.Id == id);
+            var existingAssignment = await _context.Assignments.FirstOrDefaultAsync(a => a.Id == categoryId);
 
             existingAssignment!.Name = updateAssignment.Name;
             existingAssignment.Description = updateAssignment.Description;
             existingAssignment.IsCompleted = updateAssignment.IsCompleted;
             existingAssignment.StartDate = updateAssignment.StartDate;
             existingAssignment.DueDate = updateAssignment.DueDate;
+            existingAssignment.Priority = updateAssignment.Priority;
             existingAssignment.IsCompleted = updateAssignment.IsCompleted;
             existingAssignment.CategoryId = updateAssignment.CategoryId;
-
+                
             await _context.SaveChangesAsync();
 
             return (int)ApiResponseStatus.Updated; ;

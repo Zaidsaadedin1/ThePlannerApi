@@ -118,7 +118,7 @@ namespace ThePlannerAPI.Controllers
 
 
         [HttpPut("/Assignment")]
-        public async Task<ActionResult> UpdateAssignment([FromQuery] int id, [FromBody] UpdateAssignmentDTO updateAssignment)
+        public async Task<ActionResult> UpdateAssignment([FromQuery] int categoryId, [FromBody] UpdateAssignmentDTO updateAssignment)
         {
             var validationResult = await _updateAssignmentValidator.ValidateAsync(updateAssignment);
 
@@ -128,19 +128,19 @@ namespace ThePlannerAPI.Controllers
                 return BadRequest(validationResult);
             }
 
-            var assignmentExist = await _assignmentValidationQuery.IsAssignmentExist(id);
+            var assignmentExist = await _assignmentValidationQuery.IsAssignmentExist(categoryId);
             if (!assignmentExist)
             {
                 return BadRequest(new
                 {
-                    Message = $"Assignment With This ID: ({id}),Dose Not  Exist"
+                    Message = $"Assignment With This ID: ({categoryId}),Dose Not  Exist"
                 });
             }
 
-            var result = await _assignmentService.UpdateAssignment(updateAssignment, id);
+            var result = await _assignmentService.UpdateAssignment(updateAssignment, categoryId);
             return Ok(new
             {
-                Message = $"Assignment With This ID: ({id}),Updated Successfully"
+                Message = $"Assignment With This ID: ({categoryId}),Updated Successfully"
             });
             }
 
