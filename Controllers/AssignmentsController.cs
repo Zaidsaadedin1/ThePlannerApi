@@ -118,7 +118,7 @@ namespace ThePlannerAPI.Controllers
 
 
         [HttpPut("/Assignment")]
-        public async Task<ActionResult> UpdateAssignment([FromQuery] int categoryId, [FromBody] UpdateAssignmentDTO updateAssignment)
+        public async Task<ActionResult> UpdateAssignment([FromQuery] int assignmentId, [FromBody] UpdateAssignmentDTO updateAssignment)
         {
             var validationResult = await _updateAssignmentValidator.ValidateAsync(updateAssignment);
 
@@ -128,19 +128,28 @@ namespace ThePlannerAPI.Controllers
                 return BadRequest(validationResult);
             }
 
-            var assignmentExist = await _assignmentValidationQuery.IsAssignmentExist(categoryId);
+            var assignmentExist = await _assignmentValidationQuery.IsAssignmentExist(assignmentId);
             if (!assignmentExist)
             {
                 return BadRequest(new
                 {
-                    Message = $"Assignment With This ID: ({categoryId}),Dose Not  Exist"
+                    Message = $"Assignment With This ID: ({assignmentId}),Dose Not  Exist"
+                });
+            }
+            var assignmentNameExist = await _assignmentValidationQuery.IsAssignmentExist(updateAssignment.Name);
+            var currentAssignment = await _assignmentService.GetAssignmentById(assignmentId);
+            if (assignmentNameExist && currentAssignment?.Id != assignmentId )
+            {
+                return BadRequest(new
+                {
+                    Message = $"Assignment With This Name : ({updateAssignment.Name}),Dose Already  Exist"
                 });
             }
 
-            var result = await _assignmentService.UpdateAssignment(updateAssignment, categoryId);
+            var result = await _assignmentService.UpdateAssignment(updateAssignment, assignmentId);
             return Ok(new
             {
-                Message = $"Assignment With This ID: ({categoryId}),Updated Successfully"
+                Message = $"Assignment With This ID: ({assignmentId}),Updated Successfully"
             });
             }
 
