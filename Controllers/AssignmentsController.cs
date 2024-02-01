@@ -161,9 +161,9 @@ namespace ThePlannerAPI.Controllers
             return Ok(new { Message = "Filtered Assignments Retrieved Successfully", Assignments = filteredAssignments });
         }
         [HttpPost("/Assignments/Search")]
-        public async Task<IActionResult> Search([FromBody] AssignmentSearchRequestDto searchRequest)
+        public async Task<IActionResult> Search([FromBody] string searchValue)
         {
-            var result = await _assignmentService.GetAssignmentsBySearch(searchRequest.Value);
+            var result = await _assignmentService.GetAssignmentsBySearch(searchValue);
 
             return Ok(result);
         }

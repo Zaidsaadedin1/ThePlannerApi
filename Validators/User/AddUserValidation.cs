@@ -24,7 +24,7 @@ namespace ThePlannerAPI.Validators.User
             RuleFor(user => user.Username)
                 .NotNull()
                 .NotEmpty()
-                .MinimumLength(5)
+                .MinimumLength(4)
                 .MaximumLength(20);
 
             RuleFor(user => user.HasImage)

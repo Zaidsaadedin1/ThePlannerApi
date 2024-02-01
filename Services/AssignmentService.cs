@@ -110,10 +110,9 @@ namespace ThePlannerAPI.Services
         {
             var query = _context.Assignments.AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter.Name))
+            if (filter.CategoryId != null)
             {
-                var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryName == filter.Name);
-                query = query.Where(a => a.CategoryId == category.Id);
+                query = query.Where(a => a.CategoryId == filter.CategoryId);
             }
 
             if (filter.IsComplete.HasValue)
@@ -157,7 +156,9 @@ namespace ThePlannerAPI.Services
                 Priority = assignment.Priority,
                 StartDate = assignment.StartDate,
                 DueDate = assignment.DueDate,
-                IsCompleted = assignment.IsCompleted
+                IsCompleted = assignment.IsCompleted,
+                CategoryId=assignment.CategoryId
+                
             }).ToList();
 
             return allAssignments;
